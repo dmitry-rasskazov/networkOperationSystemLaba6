@@ -17,24 +17,24 @@ void serveripc()
     unsigned int clientAddrLen;
     struct sockaddr_in server, client; /* адрес сервера */
     sock = socket(PF_INET, SOCK_DGRAM, 0); /* создание сокета */
-    bzero( &server, sizeof(server) );/* назначение адреса сокету */
+    bzero( &server, sizeof(server));
     server.sin_family = PF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(PORT);
+    server.sin_addr.s_addr = INADDR_ANY;/* назначение адреса сокету */
+    server.sin_port = htons(PORT_SERVER);
     bind(sock, (struct sockaddr *) &server, sizeof(server));
-    listen(sock, 5); /* переход к прослушиванию приходящих связей */
 
     char buff[16];
-    for (;;) {
-        ret = recvfrom(sock, buff, 16, 0, (struct sockaddr *) &client, &clientAddrLen);
 
+
+    while (1) {
+        ret = recvfrom(sock, buff, 16, 0, (struct sockaddr *) &client, &clientAddrLen);
         if(ret < 0) {
             printf("Ошибка чтения сокета!");
             break;
+        } else {
+            printf("Client accepted: address=%s, port=%d\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
+            printf("Принятые данные: %s\n", buff);
         }
-
-        printf("Client accepted: address=%s, port=%d\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
-        printf("Принятые данные: %s\n", buff);
     }
 
     close (sock);/* закрытие текущей связи */

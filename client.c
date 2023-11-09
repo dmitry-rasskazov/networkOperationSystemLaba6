@@ -2,6 +2,7 @@
 
 void clientipc();
 void client(int sock, struct sockaddr_in serverAddress);
+void fillSocketAddress(struct sockaddr_in * sockaddr, int port);
 
 int main(void)
 {
@@ -13,16 +14,12 @@ void clientipc()
 {
     int sock; /* дескриптор сокета */
     struct sockaddr_in server; /* адрес сервера */
-    struct in_addr *srv;
-    unsigned long addr_s;
+
     sock = socket(PF_INET, SOCK_DGRAM, 0);/* создание сокета */
     bzero(&server, sizeof(server));
-    server.sin_family = PF_INET;
-    srv=&(server.sin_addr);
-    addr_s = inet_addr("127.0.0.1");
-    (*srv).s_addr = addr_s;
-    server.sin_port = htons(PORT); /* соединение с сервером */
-    bind(sock, (struct sockaddr *) &server, sizeof(server));
+
+    fillSocketAddress(&server, PORT_SERVER);
+
     client(sock, server); /* закрытие соединения */
     close(sock);
 }
@@ -38,4 +35,16 @@ void client(int sock, struct sockaddr_in serverAddress)
     }
 
     printf("Успешная отправка %d байт", ret);
+}
+
+void fillSocketAddress(struct sockaddr_in * sockaddr, int port)
+{
+    struct in_addr *srv;
+    unsigned long addr_s;
+
+    (* sockaddr).sin_family = PF_INET;
+    srv=&((* sockaddr).sin_addr);
+    addr_s = inet_addr("127.0.0.1");
+    (*srv).s_addr = addr_s;
+    (* sockaddr).sin_port = htons(port);
 }

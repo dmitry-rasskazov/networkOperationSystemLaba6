@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#define PORT 6259 /* номер порта */
+#define PORT_SERVER 6259 /* номер порта */
+#define PORT_CLIENT 6260 /* номер порта */
 
 #endif //LABA6_DATAGRAM_COMMON_H
