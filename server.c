@@ -18,6 +18,7 @@ void serveripc()
     struct sockaddr_in server, client; /* адрес сервера */
     sock = socket(PF_INET, SOCK_DGRAM, 0); /* создание сокета */
     bzero( &server, sizeof(server));
+    bzero( &client, sizeof(client));
     server.sin_family = PF_INET;
     server.sin_addr.s_addr = INADDR_ANY;/* назначение адреса сокету */
     server.sin_port = htons(PORT_SERVER);
