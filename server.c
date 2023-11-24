@@ -14,7 +14,7 @@ void serveripc()
 {
     int sock; /* дескриптор сокета */
     int ret; /* возвращаемое значение */
-    unsigned int clientAddrLen;
+
     struct sockaddr_in server, client; /* адрес сервера */
     sock = socket(PF_INET, SOCK_DGRAM, 0); /* создание сокета */
     bzero( &server, sizeof(server));
@@ -22,6 +22,7 @@ void serveripc()
     server.sin_family = PF_INET;
     server.sin_addr.s_addr = INADDR_ANY;/* назначение адреса сокету */
     server.sin_port = htons(PORT_SERVER);
+    unsigned int clientAddrLen = sizeof (client);
     bind(sock, (struct sockaddr *) &server, sizeof(server));
 
     char buff[16];
